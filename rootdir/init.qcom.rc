@@ -50,6 +50,8 @@ on init
     symlink /sdcard /storage/sdcard0
 
 on fs
+    wait /dev/block/platform/${ro.boot.bootdevice}
+    symlink /dev/block/platform/${ro.boot.bootdevice} /dev/block/bootdevice
     mount_all fstab.qcom
 
     # Support Preload install apks
@@ -505,7 +507,7 @@ service audiod /system/bin/audiod
 service charger /sbin/healthd -c
     class charger
     critical
-    seclabel u:r:healthd:s0
+    seclabel u:r:charger:s0
 
 service ds_fmc_appd /system/bin/ds_fmc_appd -p "rmnet0" -D
     class late_start

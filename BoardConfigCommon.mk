@@ -26,6 +26,8 @@ TARGET_CPU_VARIANT := krait
 # Audio
 AUDIO_FEATURE_ENABLED_LOW_LATENCY_CAPTURE := true
 BOARD_USES_ALSA_AUDIO := true
+BOARD_USES_GENERIC_AUDIO := true
+TARGET_USES_QCOM_MM_AUDIO := true
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
@@ -37,9 +39,10 @@ BLUETOOTH_HCI_USE_MCT := true
 TARGET_BOOTLOADER_BOARD_NAME := MSM8226
 
 # Camera
-TARGET_PROVIDES_CAMERA_HAL := true
+TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 USE_DEVICE_SPECIFIC_CAMERA := true
-TARGET_USE_COMPAT_GRALLOC_ALIGN := true
+TARGET_USES_NON_TREBLE_CAMERA := true
+
 
 # Charger
 BOARD_BATTERY_DEVICE_NAME := "battery"
@@ -48,8 +51,13 @@ BOARD_CHARGING_CMDLINE_VALUE := "charger"
 BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_SHOW_PERCENTAGE := true
 
-# CMHW
+# LINEAGEHW
 BOARD_HARDWARE_CLASS += $(VENDOR_PATH)/lineagehw
+
+# Render
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+USE_OPENGL_RENDERER := true
+
 
 # Custom RIL class
 BOARD_RIL_CLASS := ../../../$(VENDOR_PATH)/ril
@@ -57,6 +65,11 @@ BOARD_RIL_CLASS := ../../../$(VENDOR_PATH)/ril
 # Display
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+
+# Filesystem
+#TARGET_ALLOW_LEGACY_AIDS := true
+#TARGET_FS_CONFIG_GEN := $(VENDOR_PATH)/config.fs
+
 
 # Shader cache config options
 # Maximum size of the  GLES Shaders that can be cached for reuse.
@@ -99,7 +112,7 @@ ifeq ($(HOST_OS),linux)
   ifneq ($(TARGET_BUILD_VARIANT),eng)
     ifeq ($(WITH_DEXPREOPT),)
       WITH_DEXPREOPT := true
-      WITH_DEXPREOPT_BOOT_IMG_ONLY := true
+      WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := true
     endif
   endif
 endif
@@ -119,6 +132,7 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
 TARGET_PROVIDES_WCNSS_QMI        := true
 TARGET_USES_QCOM_WCNSS_QMI       := true
 TARGET_USES_WCNSS_CTRL           := true
+PRODUCT_VENDOR_MOVE_ENABLED := true
 WPA_SUPPLICANT_VERSION           := VER_0_8_X
 WIFI_DRIVER_FW_PATH_STA          := "sta"
 WIFI_DRIVER_FW_PATH_AP           := "ap"
